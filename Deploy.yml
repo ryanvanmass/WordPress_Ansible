@@ -1,4 +1,5 @@
 ---
+# Installs Dependancies
   - name: Download Dependancies
     hosts: localhost
     tasks:
@@ -28,6 +29,7 @@
           state: started
           enabled: yes
 
+# Configures Database for wordpress
   - name: Set up MariaDB
     hosts: localhost
     tasks:
@@ -40,6 +42,7 @@
       - name: Flush Privileges
         shell: mysql -u root -e "flush privileges"
 
+# Downloads Sets up and configures all required settings for wordpress
   - name: Set up Wordpress
     hosts: localhost
     tasks:
