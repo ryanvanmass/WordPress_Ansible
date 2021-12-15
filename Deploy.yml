@@ -1,0 +1,70 @@
+---
+  - name: Download Dependancies
+    hosts: localhost
+    tasks:
+      - name: PHP
+        zypper:
+          name:
+            - php-gd
+            - php-pdo
+            - php-mysql
+            - php-mbstring
+            - php-simplexml
+            - php-curl
+            - apache2-mod_php7
+          state: present
+      - name: MariaDB
+        zypper:
+          name:
+            - mariadb
+            - mariadb-tools
+  
+  - name: Start Services
+    hosts: localhost
+    tasks:
+      - name: MariaDB
+        systemd:
+          name: mysql
+          state: started
+          enabled: yes
+
+  - name: Set up MariaDB
+    hosts: localhost
+    tasks:
+      - name: Create Wordpress database
+        shell: mysql -u root -e "create database wordpress character set utf8mb4"
+      - name: create wordpress user
+        shell: mysql -u root -e "create user wordpress@localhost identified by 'wordpress'"
+      - name: Set Security permissions
+        shell: mysql -u root -e "grant all on wordpress.* to wordpress@localhost"
+      - name: Flush Privileges
+        shell: mysql -u root -e "flush privileges"
+
+  - name: Set up Wordpress
+    hosts: localhost
+    tasks:
+# May not need if Downloading via unarchive works
+#      - name: Download Wordpress
+#        get_url:
+#          url: https://wordpress.org/latest.tar.gz
+#          dest: /root
+      - name: Decompress Wordpress
+        unarchive:
+          src: https://wordpress.org/latest.tar.gz
+          dest: /srv/www/htdocs/wordpress
+          remote_src: yes
+      - name: Copy wp-config to correct directory
+        shell: cp $PWD/Config_Files/wp-config.php /srv/www/htdocs/wordpress/
+      - name: Copy wordpress.conf to correct Directory
+        shell: cp $PWD/Config_Files/wordpress.conf /etc/apache2/conf.d/
+      - name: Restart Apache
+        systemd:
+          name: apache2
+          state: restarted
+          enabled: yes
+      - name: Open Firewall Ports
+        firewalld:
+          service: apache2
+          permanent: yes
+          state: enabled
+          immediate: yes
