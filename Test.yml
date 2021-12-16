@@ -44,4 +44,4 @@
       - name: Restart Apache
         shell: systemctl restart apache2
       - name: Open Firewall Ports
-        shell: firewall-cmd --add-port=80/tcp --permenant && firewall-cmd --reload
+        shell: firewall-cmd --add-port=80/tcp
