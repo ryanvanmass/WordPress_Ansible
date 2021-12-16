@@ -48,7 +48,7 @@
     tasks:
       - name: Create Directory
         file:
-          path: /srv/www/htdocs/wordpress
+          path: /srv/www/htdocs/
           state: directory
 # May not need if Downloading via unarchive works
 #      - name: Download Wordpress
