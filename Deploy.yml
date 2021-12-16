@@ -58,7 +58,7 @@
       - name: Decompress Wordpress
         unarchive:
           src: https://wordpress.org/latest.tar.gz
-          dest: /srv/www/htdocs/wordpress
+          dest: /srv/www/htdocs/
           remote_src: yes
       - name: Copy wp-config to correct directory
         shell: cp $PWD/Config_Files/wp-config.php /srv/www/htdocs/wordpress/
