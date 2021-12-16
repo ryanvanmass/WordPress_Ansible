@@ -4,7 +4,7 @@
     hosts: localhost
     tasks:
       - name: Install
-        shell: zypper install php-gd  php-pdo  php-mysql  php-mbstring  php-simplexml  php-curl apache2-mod_php7 mariadb mariadb-tools
+        shell: zypper --non-interactive install php-gd  php-pdo  php-mysql  php-mbstring  php-simplexml  php-curl apache2-mod_php7 mariadb mariadb-tools
   
   - name: Start Services
     hosts: localhost
