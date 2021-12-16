@@ -3,7 +3,8 @@
   - name: Download Dependancies
     hosts: localhost
     tasks:
-      - name: PHP
+      # Using Shell command instead of Zypper Module due to a bug preventing PHP from functioning correctly when installed via the Module
+      - name: Installing
         shell: zypper --non-interactive install php-gd  php-pdo  php-mysql  php-mbstring  php-simplexml  php-curl apache2-mod_php7 mariadb mariadb-tools
   
   - name: Start Services
