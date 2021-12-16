@@ -64,6 +64,8 @@
         shell: cp $PWD/Config_Files/wp-config.php /srv/www/htdocs/wordpress/
       - name: Copy wordpress.conf to correct Directory
         shell: cp $PWD/Config_Files/wordpress.conf /etc/apache2/conf.d/
+      - name: Set Correct user Permissions
+        shell: chown -R wwwrun:www /srv/www/htdocs/ && chmod 775 -R /srv/www/htdocs/
       - name: Restart Apache
         systemd:
           name: apache2
